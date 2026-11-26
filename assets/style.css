@@ -602,6 +602,5 @@ button {
   .contacts { grid-template-columns: repeat(2, minmax(0, 240px)); gap: 36px 0; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; animation: none !important; }
-}
+/* Animations stay on even when Windows/macOS asks for reduced motion
+   (Windows turns that on with "Adjust for best performance"): they are short and subtle. */

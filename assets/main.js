@@ -136,7 +136,9 @@ window.addEventListener("resize", placeContent);
 
 // ---------- Page transitions ----------
 const body = document.body;
-const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+// Transitions always play — also when the system asks for reduced motion
+// (Windows switches that on with "Adjust for best performance").
+const reduceMotion = { matches: false };
 const RETURN_FLAG = "mtc-return-home";
 
 // Normal left click only — Ctrl/Cmd/Shift/middle click still open a new tab as usual

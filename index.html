@@ -24,7 +24,7 @@
   <link rel="preload" href="/assets/uncut-sans-book.woff2" as="font" type="font/woff2" crossorigin>
   <!-- Fetch the menu page in the background, so it opens instantly after the transition -->
   <link rel="prefetch" href="/menu/">
-  <link rel="stylesheet" href="/assets/style.css?v=36">
+  <link rel="stylesheet" href="/assets/style.css?v=37">
 
   <!-- Tiny blurred preview (≈0.4 KB) built into the page: shows instantly, before anything loads -->
   <style>
@@ -43,7 +43,7 @@
       var backFromInner = nav && nav.type === "back_forward" &&
                           (sessionStorage.getItem("mtc-last-page") || "/") !== "/";
       if (sessionStorage.getItem("mtc-return-home") || backFromInner) {
-        if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.body.classList.add("is-leaving");
+        document.body.classList.add("is-leaving");
       }
       sessionStorage.removeItem("mtc-return-home");
       sessionStorage.setItem("mtc-last-page", "/");
@@ -81,14 +81,27 @@
   <script>
     (function () {
       var v = document.querySelector(".hero");
-      // People who asked their system for less motion get the still frame only.
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        v.remove();
-        return;
-      }
+      // The background video always plays (also when the system asks for reduced motion —
+      // it is slow and ambient; page transitions still respect that setting).
       v.addEventListener("playing", function () { v.classList.add("is-playing"); }, { once: true });
+
+      // If the browser blocks autoplay (battery saver, low-power mode, strict settings),
+      // start the video on the visitor's first move / click / tap / scroll / key.
+      var events = ["pointermove", "pointerdown", "touchstart", "scroll", "keydown", "wheel"];
+      function retry() {
+        if (!v.paused) return cleanup();
+        var q = v.play();
+        if (q && q.then) q.then(cleanup).catch(function () {});
+      }
+      function cleanup() { events.forEach(function (e) { window.removeEventListener(e, retry); }); }
       var p = v.play();
-      if (p && p.catch) p.catch(function () { /* autoplay blocked (e.g. iOS low-power mode): the still frame stays */ });
+      if (p && p.catch) p.catch(function () {
+        events.forEach(function (e) { window.addEventListener(e, retry, { passive: true }); });
+      });
+      // Coming back to the tab after it was in the background: make sure it is playing
+      document.addEventListener("visibilitychange", function () {
+        if (!document.hidden && v.paused) v.play().catch(function () {});
+      });
     })();
   </script>
 
@@ -100,6 +113,6 @@
   <h1 class="sr-only">MTC LOG — Modern Trade, Commerce &amp; Logistics</h1>
 
   <footer class="footer"><span data-year>© 2026</span></footer>
-  <script src="/assets/main.js?v=36" defer></script>
+  <script src="/assets/main.js?v=37" defer></script>
 </body>
 </html>
