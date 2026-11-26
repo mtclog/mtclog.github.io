@@ -24,7 +24,7 @@
   <link rel="preload" href="/assets/uncut-sans-book.woff2" as="font" type="font/woff2" crossorigin>
   <!-- Fetch the menu page in the background, so it opens instantly after the transition -->
   <link rel="prefetch" href="/menu/">
-  <link rel="stylesheet" href="/assets/style.css?v=37">
+  <link rel="stylesheet" href="/assets/style.css?v=38">
 
   <!-- Tiny blurred preview (≈0.4 KB) built into the page: shows instantly, before anything loads -->
   <style>
@@ -81,12 +81,31 @@
   <script>
     (function () {
       var v = document.querySelector(".hero");
-      // The background video always plays (also when the system asks for reduced motion —
-      // it is slow and ambient; page transitions still respect that setting).
-      v.addEventListener("playing", function () { v.classList.add("is-playing"); }, { once: true });
+      // The background video always plays (also when the system asks for reduced motion).
+      v.addEventListener("playing", function () {
+        v.classList.add("is-playing");
+        var img = document.querySelector(".hero-anim");
+        if (img) img.remove(); // the video took over, the animated image is not needed
+      });
 
-      // If the browser blocks autoplay (battery saver, low-power mode, strict settings),
-      // start the video on the visitor's first move / click / tap / scroll / key.
+      // Some devices never allow video autoplay — e.g. iPhone/iPad in Low Power Mode.
+      // Animated images are still allowed there, so we show the same animation as an
+      // animated AVIF (~0.1–0.2 MB). It is downloaded only in that case.
+      function useAnimatedImage() {
+        if (!v.paused || document.querySelector(".hero-anim")) return;
+        var portrait = window.matchMedia("(orientation: portrait) and (max-width: 1024px)").matches;
+        var img = new Image();
+        img.className = "hero-anim";
+        img.alt = "";
+        img.setAttribute("aria-hidden", "true");
+        img.decoding = "async";
+        img.onload = function () { img.classList.add("is-loaded"); };
+        img.onerror = function () { img.remove(); }; // very old browsers: the still frame stays
+        img.src = "/assets/hero-" + (portrait ? "mobile" : "1280") + ".anim.avif?v=1";
+        document.querySelector(".hero-stage").appendChild(img);
+      }
+
+      // Also try to start the video on the visitor's first move / click / tap / scroll / key.
       var events = ["pointermove", "pointerdown", "touchstart", "scroll", "keydown", "wheel"];
       function retry() {
         if (!v.paused) return cleanup();
@@ -94,10 +113,16 @@
         if (q && q.then) q.then(cleanup).catch(function () {});
       }
       function cleanup() { events.forEach(function (e) { window.removeEventListener(e, retry); }); }
-      var p = v.play();
-      if (p && p.catch) p.catch(function () {
+      function blocked() {
+        useAnimatedImage();
         events.forEach(function (e) { window.addEventListener(e, retry, { passive: true }); });
-      });
+      }
+      var p = v.play();
+      if (p && p.catch) p.catch(blocked);
+      // Safety net: the video has data but still isn't playing → treat it as blocked
+      v.addEventListener("canplay", function () {
+        setTimeout(function () { if (v.paused && !document.hidden) blocked(); }, 800);
+      }, { once: true });
       // Coming back to the tab after it was in the background: make sure it is playing
       document.addEventListener("visibilitychange", function () {
         if (!document.hidden && v.paused) v.play().catch(function () {});
@@ -113,6 +138,6 @@
   <h1 class="sr-only">MTC LOG — Modern Trade, Commerce &amp; Logistics</h1>
 
   <footer class="footer"><span data-year>© 2026</span></footer>
-  <script src="/assets/main.js?v=37" defer></script>
+  <script src="/assets/main.js?v=38" defer></script>
 </body>
 </html>

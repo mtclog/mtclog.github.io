@@ -216,6 +216,20 @@ button {
 }
 .home .hero.is-playing { opacity: 1; }
 
+/* Same animation as an animated image — used only when the device blocks video autoplay
+   (e.g. iPhone in Low Power Mode). Added by the script in index.html. */
+.hero-anim {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+.hero-anim.is-loaded { opacity: 1; }
+
 .home .menu-link { color: var(--white); }
 
 /* Barely visible dark halo so the thin white text stays bright over light parts of the video.
