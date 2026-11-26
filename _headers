@@ -1,0 +1,13 @@
+# Cache rules — read automatically by Netlify and Cloudflare Pages.
+# (Vercel: see vercel.json. Own server: set the same headers in nginx/Apache.)
+
+# Pages: always check for a fresh version (they are tiny)
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# Images, video, font, CSS, JS: keep in the browser for 30 days.
+# CSS / JS / videos have ?v= in their links, so a new version is picked up at once.
+/assets/*
+  Cache-Control: public, max-age=2592000

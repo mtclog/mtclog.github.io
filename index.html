@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modern Trade, Commerce &amp; Logistics</title>
+  <meta name="description" content="MTC LOG is an international logistics and trading company specializing in freight forwarding, commodity brokerage, and cross-border trade facilitation.">
+  <link rel="canonical" href="https://www.mtclog.eu/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.mtclog.eu/">
+  <meta property="og:title" content="Modern Trade, Commerce &amp; Logistics">
+  <meta property="og:description" content="MTC LOG is an international logistics and trading company specializing in freight forwarding, commodity brokerage, and cross-border trade facilitation.">
+  <meta property="og:image" content="https://www.mtclog.eu/assets/hero-og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" href="/assets/favicon-light.svg" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="/assets/favicon-dark.svg" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+
+  <!-- Start downloading the first frame right away (same media rules as the <picture> below) -->
+  <link rel="preload" as="image" href="/assets/hero-mobile.webp?v=3" fetchpriority="high" media="(orientation: portrait) and (max-width: 1024px)">
+  <link rel="preload" as="image" href="/assets/hero-1280.webp?v=3" fetchpriority="high" media="(orientation: landscape) and (max-width: 1366px), (orientation: portrait) and (min-width: 1025px) and (max-width: 1366px)">
+  <link rel="preload" as="image" href="/assets/hero-1920.webp?v=3" fetchpriority="high" media="(min-width: 1367px)">
+  <link rel="preload" href="/assets/uncut-sans-book.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- Fetch the menu page in the background, so it opens instantly after the transition -->
+  <link rel="prefetch" href="/menu/">
+  <link rel="stylesheet" href="/assets/style.css?v=36">
+
+  <!-- Tiny blurred preview (≈0.4 KB) built into the page: shows instantly, before anything loads -->
+  <style>
+    .hero-lqip { background-image: url("data:image/jpeg;base64,/9j//gAPTGF2YzYzLjEuMTAyAP/bAEMACAwMDgwOEBAQEBAQExITFBQUExMTExQUFBUVFRkZGRUVFRQUFRUYGBkZGxwbGhoZGhwcHh4eJCQiIioqKzMzPv/EAGUAAAMBAAMBAAAAAAAAAAAAAAUEAgYBAAMHAQEBAAAAAAAAAAAAAAAAAAAAARAAAgIBAwMDBQEAAAAAAAAAAQIAAxEEIRIxQXEFE5EisqGBI1ERAQAAAAAAAAAAAAAAAAAAAAD/wAARCAAeADADASIAAhEAAxEA/9oADAMBAAIRAxEAPwD4dWpPaHNPUSe8jTarTLsVP4mno1VTH+VWem5KqIHNdTgbAxj273G2Y4NbYMqqVMRsVHP7uPGeOr9QfSBQy1hmGcK2ceehEDG6ui4v9QMGnT464hLUeo22nfHxAVl7HvIhZMQjWxJAG0EygxEDRG21AeFjKM9mxv8ArEGMWd+ROSepJzn5iXuN/sjkYD1jMepx4iR8zpYmRA//2Q=="); }
+    @media (orientation: portrait) and (max-width: 1024px) {
+      .hero-lqip { background-image: url("data:image/jpeg;base64,/9j//gAPTGF2YzYzLjEuMTAyAP/bAEMACAwMDgwOEBAQEBAQExITFBQUExMTExQUFBUVFRkZGRUVFRQUFRUYGBkZGxwbGhoZGhwcHh4eJCQiIioqKzMzPv/EAGgAAAIDAQEAAAAAAAAAAAAAAAUGBAACAwcBAQEAAAAAAAAAAAAAAAAAAAABEAABBAEDAgMJAQAAAAAAAAABAgMAEQQSITEiQQVhUoGhkYKxFXEjExQRAQAAAAAAAAAAAAAAAAAAAAD/wAARCAAwACADASIAAhEAAxEA/9oADAMBAAIRAxEAPwDyZtuEkgjiEWcFRhYeHGuYC4SoDkyA6pQEcBg77yPkYLZHOn3wMIeytGslplHYr3v8CdP9mSB+t5p4nsEKseyt4mh91aALUoDsar6Qj92cQlKUtNUPVZHwuoDe6rOZx/7uaSm9PS06DfzITt5xMf8AEHHL6iIOzM/IyiCpdJApKEk6UjyEHJUmuokwO4cTpAlcLdCib7wTctmREklJmuipDlhX/9k="); }
+    }
+  </style>
+</head>
+<body class="page home">
+  <script>
+    // Arriving from the menu / an inner page (X, logo or the browser's Back button):
+    // start covered by the white curtain, main.js then slides it down to uncover the video.
+    try {
+      var nav = performance.getEntriesByType("navigation")[0];
+      var backFromInner = nav && nav.type === "back_forward" &&
+                          (sessionStorage.getItem("mtc-last-page") || "/") !== "/";
+      if (sessionStorage.getItem("mtc-return-home") || backFromInner) {
+        if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.body.classList.add("is-leaving");
+      }
+      sessionStorage.removeItem("mtc-return-home");
+      sessionStorage.setItem("mtc-last-page", "/");
+    } catch (e) {}
+  </script>
+  <!--
+    Background, in 3 layers (each one fades in over the previous):
+      1. .hero-lqip  – tiny blurred preview, inside this file → appears instantly
+      2. <picture>   – sharp first frame (60–170 KB)
+      3. <video>     – the animation (AV1 for modern browsers, H.264 fallback),
+                       sized for phone / laptop / big screen
+  -->
+  <div class="hero-stage">
+  <div class="hero-lqip" aria-hidden="true"></div>
+
+  <picture class="hero-poster" aria-hidden="true">
+    <source srcset="/assets/hero-mobile.webp?v=3" media="(orientation: portrait) and (max-width: 1024px)">
+    <source srcset="/assets/hero-1280.webp?v=3" media="(max-width: 1366px)">
+    <img src="/assets/hero-1920.webp?v=3" alt="" fetchpriority="high" decoding="async"
+         onload="this.parentNode.classList.add('is-loaded')">
+  </picture>
+
+  <video class="hero" muted loop playsinline preload="auto" aria-hidden="true">
+    <source src="/assets/hero-mobile.av1.mp4?v=4" type='video/mp4; codecs="av01.0.05M.08"' media="(orientation: portrait) and (max-width: 1024px)">
+    <source src="/assets/hero-mobile.mp4?v=4"     type="video/mp4"                         media="(orientation: portrait) and (max-width: 1024px)">
+    <source src="/assets/hero-1280.av1.mp4?v=4"   type='video/mp4; codecs="av01.0.05M.08"' media="(max-width: 1366px)">
+    <source src="/assets/hero-1280.mp4?v=4"       type="video/mp4"                         media="(max-width: 1366px)">
+    <source src="/assets/hero-1920.av1.mp4?v=4"   type='video/mp4; codecs="av01.0.08M.08"'>
+    <source src="/assets/hero-1920.mp4?v=4"       type="video/mp4">
+  </video>
+  </div>
+
+  <!-- White curtain that slides up over the video when MENU is clicked -->
+  <div class="curtain" aria-hidden="true"></div>
+  <script>
+    (function () {
+      var v = document.querySelector(".hero");
+      // People who asked their system for less motion get the still frame only.
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        v.remove();
+        return;
+      }
+      v.addEventListener("playing", function () { v.classList.add("is-playing"); }, { once: true });
+      var p = v.play();
+      if (p && p.catch) p.catch(function () { /* autoplay blocked (e.g. iOS low-power mode): the still frame stays */ });
+    })();
+  </script>
+
+  <header class="header">
+    <a href="/" class="logo" aria-label="MTC LOG — home"></a>
+    <a href="/menu/" class="menu-link">MENU</a>
+  </header>
+
+  <h1 class="sr-only">MTC LOG — Modern Trade, Commerce &amp; Logistics</h1>
+
+  <footer class="footer"><span data-year>© 2026</span></footer>
+  <script src="/assets/main.js?v=36" defer></script>
+</body>
+</html>

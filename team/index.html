@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Team — MTC LOG</title>
+  <meta name="description" content="Aliaksei Lapotka and Nazar Vilchenko, co-founders of MTC LOG.">
+  <link rel="canonical" href="https://www.mtclog.eu/team/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.mtclog.eu/team/">
+  <meta property="og:title" content="Team — MTC LOG">
+  <meta property="og:description" content="Aliaksei Lapotka and Nazar Vilchenko, co-founders of MTC LOG.">
+  <meta property="og:image" content="https://www.mtclog.eu/assets/hero-og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/assets/favicon-light.svg" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="/assets/favicon-dark.svg" media="(prefers-color-scheme: dark)">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="preload" href="/assets/uncut-sans-book.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/style.css?v=36">
+</head>
+<body class="page team">
+  <header class="header">
+    <a href="/" class="logo" aria-label="MTC LOG — home"></a>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <span>Team</span><span>/</span><a href="/menu/" class="menu-link">Menu</a>
+    </nav>
+  </header>
+
+  <!--
+    Computer: hover a name → the photo appears large on the right.
+    Phone / tablet: both photos side by side, names under them.
+  -->
+  <main class="main">
+    <section class="content">
+      <ul class="list members" data-select>
+        <li class="item">
+          <img class="member-photo" alt="Aliaksei Lapotka" width="2400" height="3000" decoding="async"
+               src="/assets/team-aliaksei-960.webp"
+               srcset="/assets/team-aliaksei-480.webp 480w, /assets/team-aliaksei-960.webp 960w, /assets/team-aliaksei-1600.webp 1600w"
+               sizes="(min-width: 960px) min(calc((100vh - 160px) * 0.8), calc(75vw - 240px)), (min-width: 600px) 36vw, 48vw">
+          <button class="item-btn" aria-expanded="false">Aliaksei Lapotka<br><span class="role">co-founder</span></button>
+        </li>
+        <li class="item">
+          <img class="member-photo" alt="Nazar Vilchenko" width="2400" height="3000" decoding="async"
+               src="/assets/team-nazar-960.webp"
+               srcset="/assets/team-nazar-480.webp 480w, /assets/team-nazar-960.webp 960w, /assets/team-nazar-1600.webp 1600w"
+               sizes="(min-width: 960px) min(calc((100vh - 160px) * 0.8), calc(75vw - 240px)), (min-width: 600px) 36vw, 48vw">
+          <button class="item-btn" aria-expanded="false">Nazar Vilchenko<br><span class="role">co-founder</span></button>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- Large photo: opens on click/tap on a photo or a name. The header stays visible
+       on top, with the same gap at the bottom. Close with the cross in the photo's corner,
+       a click anywhere, or Esc. -->
+  <div class="lightbox" role="dialog" aria-modal="true" aria-label="Photo" hidden>
+    <div class="lightbox-frame">
+      <img alt="" decoding="async">
+      <button class="close lightbox-close" type="button" aria-label="Close photo">
+        <svg viewBox="0 0 22 22" fill="none" aria-hidden="true">
+          <path d="M4 4L18 18M18 4L4 18" stroke="currentColor" stroke-linecap="square"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <footer class="footer"><span data-year>© 2026</span></footer>
+  <script src="/assets/main.js?v=36" defer></script>
+</body>
+</html>

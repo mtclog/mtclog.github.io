@@ -1,0 +1,607 @@
+/* MTC LOG — styles */
+
+@font-face {
+  font-family: "Uncut Sans";
+  src: url("/assets/uncut-sans-book.woff2") format("woff2");
+  font-weight: 350 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --grey: #a0a0a0;
+  --gutter: 20px;
+  --col-list: 25vw;     /* left edge of the content list */
+  --col-detail: 62.3vw; /* left edge of the detail panel */
+  --font: "Uncut Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.2;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* No grey/blue flash box on tap (phones) — the site has its own press effect */
+html { -webkit-tap-highlight-color: transparent; }
+
+/* Cursor: arrow everywhere you can only look (also over text),
+   pointing hand on everything you can click. */
+body { cursor: default; }
+a[href],
+button { cursor: pointer; }
+
+a { color: inherit; text-decoration: none; }
+p { margin: 0; }
+ul { list-style: none; margin: 0; padding: 0; }
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Layout shell ---------- */
+
+.page {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--gutter);
+  pointer-events: none;
+}
+.header > * { pointer-events: auto; }
+
+.logo {
+  display: block;
+  width: 121px;
+  height: 22px;
+  background-color: currentColor;
+  -webkit-mask: url("/assets/logo.svg") no-repeat center / contain;
+          mask: url("/assets/logo.svg") no-repeat center / contain;
+}
+
+.crumbs {
+  display: flex;
+  gap: 5px;
+  text-transform: uppercase;
+}
+.menu-link {
+  text-transform: uppercase;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  transition: color .2s ease;
+}
+.crumbs .menu-link { color: var(--grey); }
+@media (hover: hover) {
+  .menu-link:hover { text-decoration: underline; }
+  .crumbs .menu-link:hover { color: var(--black); }
+}
+
+.close {
+  display: block;
+  width: 22px;
+  height: 22px;
+  color: var(--grey);
+  transition: color .2s ease;
+}
+.close svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: transform .3s cubic-bezier(.22, 1, .36, 1);
+}
+
+/* Small, quick hover / press feedback for everything clickable */
+.logo { transition: opacity .2s ease; }
+@media (hover: hover) {
+  .logo:hover { opacity: .6; }
+  .close:hover { color: var(--black); }
+  .close:hover svg { transform: rotate(90deg); }
+}
+/* Press (finger on the screen / mouse button down) looks exactly like hover on a computer,
+   and appears instantly. `.is-pressed` keeps that look while the next page is loading. */
+.logo:active,
+.logo.is-pressed { opacity: .6; transition-duration: 0s; }
+.home .logo:active { opacity: 1; } /* on the home page the logo does nothing */
+
+.menu-link:active,
+.menu-link.is-pressed { text-decoration: underline; transition-duration: 0s; }
+.crumbs .menu-link:active,
+.crumbs .menu-link.is-pressed { color: var(--black); }
+
+.close:active,
+.close.is-pressed { color: var(--black); transition-duration: 0s; }
+
+.nav-link:active,
+.nav-link.is-pressed,
+.item-btn:active,
+.contacts .value a:active,
+.contacts .value a.is-pressed {
+  color: var(--black);
+  text-decoration: underline;
+  transition-duration: 0s;
+}
+
+.footer {
+  position: fixed;
+  right: var(--gutter);
+  bottom: var(--gutter);
+  z-index: 10;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 100px var(--gutter);
+}
+
+/* ---------- Home ---------- */
+
+.home {
+  background: var(--black);
+  color: var(--white);
+  overflow: hidden; /* one screen; also stops sideways scrolling to the parked curtain on phones */
+}
+
+/* Background layers: blurred preview → sharp first frame → video.
+   Each layer fades in on top of the previous one, so there is never a blank screen. */
+.hero-lqip,
+.hero-poster,
+.hero-poster img,
+.home .hero {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.hero-lqip {
+  z-index: 0;
+  background-color: #111;
+  background-size: cover;
+  background-position: center;
+  filter: blur(14px);
+  transform: scale(1.08); /* hide the blurred edges */
+}
+.hero-poster { z-index: 1; opacity: 0; transition: opacity .4s ease; }
+.hero-poster.is-loaded { opacity: 1; }
+.hero-poster img { display: block; object-fit: cover; }
+
+.home .hero {
+  z-index: 2;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+.home .hero.is-playing { opacity: 1; }
+
+.home .menu-link { color: var(--white); }
+
+/* Barely visible dark halo so the thin white text stays bright over light parts of the video.
+   Switched off while the white curtain is moving (black text on white needs no shadow). */
+.home .menu-link,
+.home .footer {
+  text-shadow: 0 0 2px rgba(0, 0, 0, .4), 0 0 12px rgba(0, 0, 0, .55);
+  /* The font is thin, so its edges blend with the video and the text looks greyer than the
+     solid logo. A hairline outline in the same colour makes the strokes as bright as the logo. */
+  -webkit-text-stroke: .4px currentColor;
+  transition: color .25s ease, text-shadow .25s ease;
+}
+.home .logo {
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, .4)) drop-shadow(0 0 7px rgba(0, 0, 0, .5));
+  transition: opacity .2s ease, filter .25s ease;
+}
+.home.is-leaving .menu-link,
+.home.is-leaving .footer,
+.home.is-returning .menu-link,
+.home.is-returning .footer { text-shadow: none; }
+.home.is-leaving .logo,
+.home.is-returning .logo { filter: none; }
+
+/* ---------- Home → Menu transition ----------
+   Only transform / opacity are animated, so the GPU does the work and the site stays light.
+   1. a white curtain slides in from the right — from the MENU side — over the video
+   2. the video stays still and dims slightly as it is covered
+   3. logo and © turn black, MENU fades out → the menu page continues in the same place */
+.hero-stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 8; /* above the video, below header / footer */
+  background: var(--white);
+  transform: translateX(100%); /* parked just off the right edge */
+  pointer-events: none;
+  will-change: transform;
+}
+.home.is-leaving .curtain {
+  transform: translateX(0);
+  transition: transform .5s cubic-bezier(.76, 0, .24, 1);
+}
+.home.is-leaving .hero-stage {
+  /* the video stays in place (no zoom, no drift) — it only dims under the curtain */
+  opacity: .6;
+  transition: opacity .5s ease;
+}
+.home .header,
+.home .footer { transition: color .25s ease; }
+/* The curtain comes from the right: © (bottom right) turns black almost at once,
+   the logo (top left) last — each just as the white reaches it */
+.home.is-leaving .header,
+.home.is-leaving .footer { color: var(--black); }
+.home.is-leaving .footer { transition-delay: .05s; }
+.home.is-leaving .header { transition-delay: .28s; }
+.home.is-leaving .menu-link {
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+
+/* ---------- Menu → Home (return) ----------
+   The page opens still covered (same look as the end of the menu transition),
+   then the curtain slides back to the right, uncovering the video from the left. */
+.home.is-returning .curtain {
+  transition: transform .5s cubic-bezier(.76, 0, .24, 1);
+}
+.home.is-returning .hero-stage {
+  transition: opacity .5s ease;
+}
+/* Left uncovers first: logo turns white early, © (bottom right) last */
+.home.is-returning .header { transition: color .2s ease .08s; }
+.home.is-returning .footer { transition: color .2s ease .3s; }
+.home.is-returning .menu-link {
+  transition: opacity .3s ease .2s;
+}
+
+/* ---------- Page entrance (all inner pages) ----------
+   Items rise in one after another — short and subtle. */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+.list > li > .item-btn,
+.nav-link,
+.contacts > div,
+.menu-page .close {
+  display: inline-block;
+  animation: rise-in .5s cubic-bezier(.22, 1, .36, 1) backwards;
+}
+.list > li:nth-child(1) > *, .contacts > div:nth-child(1) { animation-delay: .04s; }
+.list > li:nth-child(2) > *, .contacts > div:nth-child(2) { animation-delay: .09s; }
+.list > li:nth-child(3) > *, .contacts > div:nth-child(3) { animation-delay: .14s; }
+.list > li:nth-child(4) > *, .contacts > div:nth-child(4) { animation-delay: .19s; }
+.list > li:nth-child(5) > *                              { animation-delay: .24s; }
+.menu-page .close { animation-delay: .1s; }
+.contacts > div { display: block; }
+
+/* ---------- Page exit (clicking a link to another page) ----------
+   Content quickly fades out (0.16s), then the next page rises in. */
+.is-exiting .main {
+  opacity: 0;
+  transition: opacity .16s ease;
+}
+
+/* ---------- Lists (menu / about / services / team) ---------- */
+
+.content {
+  position: relative;
+  width: 100%;
+  padding-left: calc(var(--col-list) - var(--gutter));
+}
+
+.list { display: flex; flex-direction: column; gap: 20px; }
+
+.item-btn,
+.nav-link {
+  color: var(--grey);
+  transition: color .2s ease;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+.item.is-active .item-btn {
+  color: var(--black);
+  text-decoration: underline;
+}
+/* Hover underline only on devices with a mouse (avoids "sticky" hover on phones) */
+@media (hover: hover) {
+  .item-btn:hover,
+  .nav-link:hover {
+    color: var(--black);
+    text-decoration: underline;
+  }
+}
+
+.nav-link { text-transform: uppercase; }
+
+/* Detail panel: right column on desktop, inline under the item on mobile */
+.detail {
+  position: absolute;
+  top: 50%;
+  /* 62.3% of the screen, but never closer than 390px to the list
+     (the longest item, "International Logistics & Freight Forwarding", is ~350px) */
+  left: calc(max(var(--col-detail), var(--col-list) + 390px) - var(--gutter));
+  right: 0;
+  max-width: 420px;
+  transform: translateY(-50%);
+  font-size: 15px;
+  line-height: 18px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s ease, visibility .3s;
+}
+.item.is-active .detail { opacity: 1; visibility: visible; }
+
+.detail p + p { margin-top: 0; }
+
+.bullets li { display: flex; gap: 12px; }
+.bullets li::before { content: "/"; flex: none; }
+
+/* Team */
+.team .item-btn { font-size: 15px; line-height: 18px; }
+.team .list { gap: 24px; }
+
+/* Desktop: the photo of the hovered person, large on the right */
+.member-photo {
+  position: fixed;
+  z-index: 5;
+  top: 80px;
+  bottom: 80px;
+  right: var(--gutter);
+  height: calc(100vh - 160px);
+  width: min(calc((100vh - 160px) * 0.8), calc(75vw - 240px));
+  object-fit: cover;
+  background: #f2f2f2;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .35s ease, visibility .35s;
+}
+.item.is-active .member-photo { opacity: 1; visibility: visible; }
+
+/* Names and photos on the Team page open the large photo */
+.team .item-btn,
+.team .member-photo { cursor: pointer; }
+/* The moment a finger presses a name it turns black + underlined (instead of the usual dim) */
+.team .item-btn:active {
+  opacity: 1;
+  color: var(--black);
+  text-decoration: underline;
+}
+/* A pressed photo dims a little (its name turns black at the same time) */
+.team .member-photo:active { opacity: .85; transition-duration: 0s; }
+/* ...and instantly, so it is seen before the white photo layer fades in over it */
+.team .item-btn:active,
+.team .item.is-active .item-btn { transition-duration: 0s; }
+
+/* ---------- Large photo (Team) ----------
+   Sits between the header and an equal gap at the bottom; white behind it. */
+.lightbox {
+  --header-h: calc(var(--gutter) * 2 + 22px);
+  position: fixed;
+  top: var(--header-h);
+  bottom: var(--header-h);
+  left: var(--gutter);
+  right: var(--gutter);
+  z-index: 9; /* below header (10), above the page */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default; /* just looking; the cross on the photo is the button */
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+.lightbox[hidden] { display: none; }
+.lightbox::before { /* white backdrop over the whole page (header stays on top of it) */
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--white);
+}
+/* The photo itself: 4:5, as large as fits between the header and the bottom gap */
+.lightbox-frame {
+  position: relative;
+  width: min(100%, calc((100vh - 2 * var(--header-h)) * .8));
+  width: min(100%, calc((100dvh - 2 * var(--header-h)) * .8));
+  aspect-ratio: 4 / 5;
+  transform: scale(.96);
+  transition: transform .35s cubic-bezier(.22, 1, .36, 1);
+}
+.lightbox img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #f2f2f2;
+}
+.lightbox.is-open { opacity: 1; }
+.lightbox.is-open .lightbox-frame { transform: none; }
+
+/* Close cross in the top-right corner of the photo (same cross as in the menu).
+   Dark so it reads on the light photo; a bigger invisible area makes it easy to tap. */
+.lightbox-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 34px;
+  height: 34px;
+  padding: 6px;
+  color: rgba(0, 0, 0, .7);
+}
+@media (hover: hover) {
+  .lightbox-close:hover { color: var(--black); }
+}
+
+/* Logo on the home page leads nowhere (we're already there) → arrow */
+.home .logo { cursor: default; }
+
+/* ---------- Contact ---------- */
+
+.contacts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 210px));
+  gap: 20px 0;
+}
+.contacts h2 {
+  margin: 0 0 20px;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 21.6px;
+}
+.contacts .value,
+.contacts .value a {
+  display: block;
+  font-size: 15px;
+  line-height: 18px;
+  color: var(--grey);
+  font-style: normal;
+}
+.contacts .value a {
+  transition: color .2s ease;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+@media (hover: hover) {
+  .contacts .value a:hover { color: var(--black); text-decoration: underline; }
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 959px) {
+  :root { --gutter: 12px; }
+
+  .content { padding-left: 0; }
+
+  /* The list starts vertically centered (like desktop). main.js then pins it at
+     that same spot, so an opening item only pushes the items below it. */
+  .main.is-pinned { align-items: flex-start; }
+
+  /* Drop-down (accordion) animation: height grows from 0, text slides down and fades in */
+  .detail {
+    position: static;
+    transform: none;
+    max-width: none;
+    display: grid;
+    grid-template-rows: 0fr;
+    margin-top: 0;
+    transition:
+      grid-template-rows .45s cubic-bezier(.22, 1, .36, 1),
+      margin-top .45s cubic-bezier(.22, 1, .36, 1),
+      opacity .3s ease,
+      visibility .45s;
+  }
+  .detail > * {
+    min-height: 0;
+    overflow: hidden;
+    transform: translateY(-10px);
+    transition: transform .45s cubic-bezier(.22, 1, .36, 1);
+  }
+  .item.is-active .detail {
+    grid-template-rows: 1fr;
+    margin-top: 16px;
+    transition:
+      grid-template-rows .45s cubic-bezier(.22, 1, .36, 1),
+      margin-top .45s cubic-bezier(.22, 1, .36, 1),
+      opacity .35s ease .08s,
+      visibility 0s;
+  }
+  .item.is-active .detail > * { transform: none; }
+
+  /* Bullet lines appear one after another */
+  .bullets li {
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  .item.is-active .bullets li { opacity: 1; transform: none; }
+  .item.is-active .bullets li:nth-child(1) { transition-delay: .08s; }
+  .item.is-active .bullets li:nth-child(2) { transition-delay: .13s; }
+  .item.is-active .bullets li:nth-child(3) { transition-delay: .18s; }
+  .item.is-active .bullets li:nth-child(4) { transition-delay: .23s; }
+  .item.is-active .bullets li:nth-child(5) { transition-delay: .28s; }
+  .item.is-active .bullets li:nth-child(6) { transition-delay: .33s; }
+
+  .contacts {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .contacts h2 { margin-bottom: 12px; }
+
+  /* Team: both photos side by side, names underneath */
+  .team .members {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .member-photo {
+    position: static;
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    margin-bottom: 10px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto; /* tappable here — opens the large photo */
+  }
+}
+
+/* Phones turned sideways (low, wide screen): smaller paddings, smaller team photos */
+@media (max-width: 959px) and (max-height: 520px) and (orientation: landscape) {
+  .main { padding-top: 64px; padding-bottom: 64px; }
+  .team .members { grid-template-columns: repeat(2, minmax(0, 150px)); }
+}
+
+/* Tablets in portrait: stacked layout, but keep the desktop indent */
+@media (min-width: 600px) and (max-width: 959px) {
+  :root { --gutter: 20px; }
+  .content { padding-left: calc(var(--col-list) - var(--gutter)); }
+  .contacts { grid-template-columns: repeat(2, minmax(0, 240px)); gap: 36px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
